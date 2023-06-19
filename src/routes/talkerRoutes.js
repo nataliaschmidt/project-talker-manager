@@ -1,11 +1,12 @@
 const express = require('express');
 const validateAge = require('../middleware/validateAge');
 const validateAuthorization = require('../middleware/validateAuthorization');
+const validateId = require('../middleware/validateId');
 const validateName = require('../middleware/validateName');
 const { validateTalk,
   validateTalkWatchedAt,
   validateTalkRate } = require('../middleware/validateTalk');
-const { findById, createTalker } = require('../utils/fileUtils');
+const { findById, createTalker, updateTalker } = require('../utils/fileUtils');
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
@@ -39,11 +40,29 @@ async (req, res) => {
 try {
   const talker = req.body;
   const newTalker = await createTalker(talker);
-  console.log(newTalker);
   return res.status(201).json(newTalker);
 } catch (error) {
 console.error(error);
 }
+});
+
+talkerRoute.put('/:id',
+validateAuthorization,
+validateName,
+validateAge,
+validateTalk,
+validateTalkWatchedAt,
+validateTalkRate,
+validateId,
+async (req, res) => {
+ try {
+  const id = Number(req.params.id);
+  const talkerToUpdate = req.body;
+  const newUpdateTalker = await updateTalker(id, talkerToUpdate);
+  return res.status(200).json(newUpdateTalker);
+ } catch (error) {
+  console.error(error);
+ }
 });
 
 module.exports = talkerRoute;
