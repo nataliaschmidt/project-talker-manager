@@ -14,9 +14,16 @@ const readFile = async () => {
   }
 };
 
-// const main = async () => {
-//   const data = await readFile()
-//   console.log(data);
-// }
+const writeFile = async (content) => {
+try {
+  const contentToWriteInFile = JSON.stringify(content, null, 2);
+  await fs.writeFile(PATHFILE, contentToWriteInFile);
+} catch (error) {
+  console.error(`Erro na escrita do arquivo, erro: ${error}`);
+}
+};
 
-// main()
+module.exports = {
+  readFile,
+  writeFile,
+};
