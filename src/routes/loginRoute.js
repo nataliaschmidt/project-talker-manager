@@ -5,15 +5,12 @@ const generateToken = require('../utils/generateToken');
 const loginRoute = express.Router();
 
 loginRoute.post('/', validateLogin, (req, res) => {
-  const { email, password } = req.body;
-
  try {
    const token = generateToken();
-   return res.status(200).json({ token: token });
+   return res.status(200).json({ token });
  } catch (error) {
   console.error(error);
  }
-  
 });
 
 module.exports = loginRoute;
