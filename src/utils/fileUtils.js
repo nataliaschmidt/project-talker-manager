@@ -37,15 +37,17 @@ const newTalkers = talkers.filter((talker) => talker.id !== id);
 await writeFile(newTalkers);
 };
 
+const searchTalker = async (q) => {
+const talkers = await readFile();
+const regex = new RegExp(q, 'i');
+
+const filteredTalker = talkers.filter((talker) => regex.test(talker.name));
+
+return filteredTalker;
+};
+
 // const main = async () => {
-//   const result = await updateTalker(1, {
-//     name: 'Natália Schmidt',
-//     age: 56,
-//     talk: {
-//       watchedAt: '22/10/2019',
-//       rate: 5,
-//     },
-//   });
+//   const result = await searchTalker('ri');
 //   console.log(result);
 // };
 
@@ -56,4 +58,5 @@ module.exports = {
   createTalker,
   updateTalker,
   deleteTalker,
+  searchTalker,
 };
