@@ -31,6 +31,12 @@ await writeFile(updateTalkers);
 return newUpdateTalker;
 };
 
+const deleteTalker = async (id) => {
+const talkers = await readFile();
+const newTalkers = talkers.filter((talker) => talker.id !== id);
+await writeFile(newTalkers);
+};
+
 // const main = async () => {
 //   const result = await updateTalker(1, {
 //     name: 'Natália Schmidt',
@@ -49,4 +55,5 @@ module.exports = {
   findById,
   createTalker,
   updateTalker,
+  deleteTalker,
 };

@@ -6,7 +6,7 @@ const validateName = require('../middleware/validateName');
 const { validateTalk,
   validateTalkWatchedAt,
   validateTalkRate } = require('../middleware/validateTalk');
-const { findById, createTalker, updateTalker } = require('../utils/fileUtils');
+const { findById, createTalker, updateTalker, deleteTalker } = require('../utils/fileUtils');
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
@@ -63,6 +63,16 @@ async (req, res) => {
  } catch (error) {
   console.error(error);
  }
+});
+
+talkerRoute.delete('/:id', validateAuthorization, async (req, res) => {
+try {
+  const id = Number(req.params.id);
+  await deleteTalker(id);
+  return res.sendStatus(204);
+} catch (error) {
+  console.error(error);
+}
 });
 
 module.exports = talkerRoute;
