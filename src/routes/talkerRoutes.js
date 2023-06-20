@@ -1,4 +1,5 @@
 const express = require('express');
+const findAllDb = require('../db/talkerDB');
 const validateAge = require('../middleware/validateAge');
 const validateAuthorization = require('../middleware/validateAuthorization');
 const validateId = require('../middleware/validateId');
@@ -17,6 +18,15 @@ const { findById,
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
+
+talkerRoute.get('/db', async (req, res) => {
+  try {
+    const talkers = await findAllDb();
+    return res.status(200).json(talkers);
+  } catch (error) {
+   return res.status(400).json({ message: `Algo deu errado, erro: ${error}` });
+  }
+});
 
 talkerRoute.get('/search', validateAuthorization, validateQuerySearch, async (req, res) => {
   try {
@@ -96,7 +106,6 @@ talkerRoute.patch('/rate/:id', validateAuthorization, validateRateUpdate, async 
   try {
     const id = Number(req.params.id);
     const rate = Number(req.body.rate);
-    console.log(rate);
 await updateRate(id, rate);
 return res.sendStatus(204);
   } catch (error) {

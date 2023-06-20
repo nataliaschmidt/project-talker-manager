@@ -28,11 +28,13 @@ services:
     environment:
       PORT: 3001
       MYSQL_HOSTNAME: db
-      MYSQL_PORT: 3306
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-      MYSQL_DATABASE: TalkerDB
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
+    env_file:
+      - .env
   db:
     container_name: talker_manager_db
     image: mysql:8.0.32
