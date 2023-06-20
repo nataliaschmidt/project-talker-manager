@@ -10,16 +10,17 @@ const { findById,
   createTalker,
   updateTalker,
   deleteTalker,
-  searchTalker } = require('../utils/fileUtils');
+  searchByName, 
+  searchTalkers} = require('../utils/fileUtils');
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
 
 talkerRoute.get('/search', validateAuthorization, async (req, res) => {
   try {
-    const { q } = req.query;
-    console.log(q);
-    const filteredTalkers = await searchTalker(q);
+    const { q, rate, date } = req.query;
+    console.log(`q ${q}, rate ${rate}, date ${date}`);
+    const filteredTalkers = await searchTalkers(q, rate, date);
   return res.status(200).json(filteredTalkers);
   } catch (error) {
     console.error(error);

@@ -37,17 +37,27 @@ const newTalkers = talkers.filter((talker) => talker.id !== id);
 await writeFile(newTalkers);
 };
 
-const searchTalker = async (q) => {
-const talkers = await readFile();
-const regex = new RegExp(q, 'i');
+const searchTalkers = async (name, rate, watchedAt) => {
+  let talkers = await readFile();
 
-const filteredTalker = talkers.filter((talker) => regex.test(talker.name));
+  if (name) {
+    const regex = new RegExp(name, 'i');
+    talkers = talkers.filter((talker) => regex.test(talker.name));
+  }
 
-return filteredTalker;
+  if (rate) {
+    talkers = talkers.filter((talker) => talker.talk.rate === Number(rate));
+  }
+
+  if (watchedAt) {
+    talkers = talkers.filter((talker) => talker.talk.watchedAt === watchedAt);
+  }
+
+  return talkers;
 };
 
 // const main = async () => {
-//   const result = await searchTalker('ri');
+//   const result = await searchTalkers('que', 5, "29/10/2020");
 //   console.log(result);
 // };
 
@@ -58,5 +68,5 @@ module.exports = {
   createTalker,
   updateTalker,
   deleteTalker,
-  searchTalker,
+  searchTalkers,
 };
