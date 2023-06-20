@@ -3,6 +3,7 @@ const validateAge = require('../middleware/validateAge');
 const validateAuthorization = require('../middleware/validateAuthorization');
 const validateId = require('../middleware/validateId');
 const validateName = require('../middleware/validateName');
+const validateQuerySearch = require('../middleware/validateQuerySearch');
 const { validateTalk,
   validateTalkWatchedAt,
   validateTalkRate } = require('../middleware/validateTalk');
@@ -10,16 +11,14 @@ const { findById,
   createTalker,
   updateTalker,
   deleteTalker,
-  searchByName, 
-  searchTalkers} = require('../utils/fileUtils');
+  searchTalkers } = require('../utils/fileUtils');
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
 
-talkerRoute.get('/search', validateAuthorization, async (req, res) => {
+talkerRoute.get('/search', validateAuthorization, validateQuerySearch, async (req, res) => {
   try {
     const { q, rate, date } = req.query;
-    console.log(`q ${q}, rate ${rate}, date ${date}`);
     const filteredTalkers = await searchTalkers(q, rate, date);
   return res.status(200).json(filteredTalkers);
   } catch (error) {
