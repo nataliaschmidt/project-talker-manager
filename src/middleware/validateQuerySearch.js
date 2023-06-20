@@ -28,4 +28,4 @@ const validateQuerySearch = (req, res, next) => {
   return next();
 };
 
-module.exports = validateQuerySearch;
+module.exports = { validateQuerySearch, validateRate };

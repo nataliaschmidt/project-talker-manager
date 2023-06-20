@@ -56,8 +56,27 @@ const searchTalkers = async (name, rate, watchedAt) => {
   return talkers;
 };
 
+const updateRate = async (id, rate) => {
+  const talkers = await readFile();
+  
+  const findTalker = await findById(id);
+  const updateTalkerRate = {
+    ...findTalker,
+    talk: {
+      ...findTalker.talk,
+      rate,
+    },
+  };
+  const talkersListUpdate = talkers.reduce((talkersList, currentTalker) => {
+    if (currentTalker.id === updateTalkerRate.id) {
+      return [...talkersList, updateTalkerRate];
+    } return [...talkersList, currentTalker];
+  }, []);
+ await writeFile(talkersListUpdate);
+};
+
 // const main = async () => {
-//   const result = await searchTalkers('que', 5, "29/10/2020");
+//   const result = await updateRate(2, 5);
 //   console.log(result);
 // };
 
@@ -69,4 +88,5 @@ module.exports = {
   updateTalker,
   deleteTalker,
   searchTalkers,
+  updateRate,
 };

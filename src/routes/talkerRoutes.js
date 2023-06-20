@@ -3,7 +3,8 @@ const validateAge = require('../middleware/validateAge');
 const validateAuthorization = require('../middleware/validateAuthorization');
 const validateId = require('../middleware/validateId');
 const validateName = require('../middleware/validateName');
-const validateQuerySearch = require('../middleware/validateQuerySearch');
+const { validateQuerySearch } = require('../middleware/validateQuerySearch');
+const validateRateUpdate = require('../middleware/validateRate');
 const { validateTalk,
   validateTalkWatchedAt,
   validateTalkRate } = require('../middleware/validateTalk');
@@ -11,7 +12,8 @@ const { findById,
   createTalker,
   updateTalker,
   deleteTalker,
-  searchTalkers } = require('../utils/fileUtils');
+  searchTalkers, 
+  updateRate } = require('../utils/fileUtils');
 const { readFile } = require('../utils/readAndWrite');
 
 const talkerRoute = express.Router();
@@ -90,4 +92,15 @@ try {
 }
 });
 
+talkerRoute.patch('/rate/:id', validateAuthorization, validateRateUpdate, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const rate = Number(req.body.rate);
+    console.log(rate);
+await updateRate(id, rate);
+return res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+  }
+});
 module.exports = talkerRoute;
